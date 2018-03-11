@@ -80,7 +80,7 @@ def main(base_folder, training_mode='majority', model_name='VGG13', max_epochs =
     display_summary(train_data_reader, val_data_reader, test_data_reader)
     
     # get the probalistic output of the model.
-    z    = model.model(input_var)
+    z    = model.model((input_var - 127.5)/127.5)
     pred = ct.softmax(z)
     
     epoch_size     = train_data_reader.size()
@@ -172,7 +172,9 @@ def main(base_folder, training_mode='majority', model_name='VGG13', max_epochs =
     logging.info("Best validation accuracy:\t\t{:.2f} %, epoch {}".format(max_val_accuracy * 100, best_epoch))
     logging.info("Test accuracy corresponding to best validation:\t\t{:.2f} %".format(final_test_accuracy * 100))
     logging.info("Best test accuracy:\t\t{:.2f} %".format(best_test_accuracy * 100))
-    
+
+    pred.save('ferplus.onnx', ct.ModelFormat.ONNX)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", 

@@ -134,7 +134,8 @@ class FERPlusReader(object):
                                                self.max_angle, 
                                                self.max_skew, 
                                                self.do_flip)
-            final_image = imgu.preproc_img(distorted_image, A=self.A, A_pinv=self.A_pinv)
+            # Remove normalization
+            final_image = distorted_image # imgu.preproc_img(distorted_image, A=self.A, A_pinv=self.A_pinv)
 
             inputs[idx-self.batch_start]    = final_image
             targets[idx-self.batch_start,:] = self._process_target(self.data[index][2])
